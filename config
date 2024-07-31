@@ -1,2 +1,24 @@
 from google.colab import drive
 drive.mount('/content/drive')
+
+#Install PySpark and Java:
+
+!apt-get install openjdk-8-jdk-headless -qq > /dev/null
+!wget -q https://archive.apache.org/dist/spark/spark-3.1.2/spark-3.1.2-bin-hadoop3.2.tgz
+!tar xf spark-3.1.2-bin-hadoop3.2.tgz
+!pip install -q findspark
+
+#Set the environment variables for Java and Spark.
+
+import os
+os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-8-openjdk-amd64"
+os.environ["SPARK_HOME"] = "/content/spark-3.1.2-bin-hadoop3.2"
+
+
+#Initialize Spark using the findspark library and create a Spark session.
+
+import findspark
+findspark.init()
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.master("local[*]").getOrCreate()
